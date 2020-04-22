@@ -3,8 +3,9 @@
   <div class="row mt-4">
     <div class="col">
       <h2>Add Item</h2>
-      <form class="form-inline">
-      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Type">
+      <form class="form-inline" action="add_todo/" method="post">
+      {% csrf_token %}
+      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Type" name="content">
       <button type="submit" class="btn btn-primary mb-2">Submit</button>
       </form>
     </div>
@@ -13,11 +14,16 @@
   <div class="row mt-2">
     <div class = "col">
       <ul class="list-group">
-        <li class="list-group-item active">Cras justo odio</li>
-        <li class="list-group-item">Dapibus ac facilisis in</li>
-        <li class="list-group-item">Morbi leo risus</li>
-        <li class="list-group-item">Porta ac consectetur ac</li>
-        <li class="list-group-item">Vestibulum at eros</li>
+        {% for todo_item in todo_items %}
+          <li class="list-group-item">{{ todo_item.text }}
+            <div class="float-right">
+              <form action="delete_todo/{{todo_item.id}}/" action="post">
+                {% csrf_token %}
+              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+              </form>
+            </div>
+          </li>
+        {% endfor %}
       </ul>
     </div>
   </div>
