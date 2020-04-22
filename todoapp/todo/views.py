@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect
 
 # Create your views here.
 def home(request):
-    todo_items = Todo_Objects.objects.all().order_by("-added_date")
+    todo_items = Todo_Objects.objects.all()
     # All of our to_do Todo_Objects
 
 
@@ -16,9 +16,11 @@ def home(request):
 def add_todo(request):
     current_date = timezone.now()  # Timezone object of the current time created
     content = request.POST["content"]  # Content from the form
+    priority_num = request.POST["priority"]
     # print(added_date)
     # print(content)
-    created_obj = Todo_Objects.objects.create(added_date=current_date, text=content)
+    print(priority_num)
+    created_obj = Todo_Objects.objects.create(added_date=current_date, text=content, priority=priority_num)
     # print(created_obj)
     # print(created_obj.id)
     # return render(request, "todo/home.html")
@@ -28,4 +30,11 @@ def add_todo(request):
 def delete_todo(request, todo_id):
     # Delete object
     Todo_Objects.objects.get(id=todo_id).delete()
+    return HttpResponseRedirect("/")
+
+def update_priority(request, todo_id):
+    priority_num = request.POST["priority"]
+    obj = Todo_Objects.objects.get(id=todo_id)
+    obj.priority = priority_num
+
     return HttpResponseRedirect("/")

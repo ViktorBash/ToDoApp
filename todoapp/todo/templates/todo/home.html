@@ -5,8 +5,18 @@
       <h2>Add Item</h2>
       <form class="form-inline" action="add_todo/" method="post">
       {% csrf_token %}
-      <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Type" name="content">
-      <button type="submit" class="btn btn-primary mb-2">Submit</button>
+      <input type="text" class="form-control mb-2 mr-sm-2 mt-2" placeholder="Type" name="content">
+
+      <label>Priority [1 Most Important] &nbsp;</label>
+      <select class="form-control" action="add_todo/" method="post" name="priority">
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+      </select>
+
+      <button type="submit" class="btn btn-primary ml-2 mb-2 mt-2">Submit</button>
       </form>
     </div>
 
@@ -16,11 +26,32 @@
       <ul class="list-group">
         {% for todo_item in todo_items %}
           <li class="list-group-item">{{ todo_item.text }}
+
+
             <div class="float-right">
-              <form action="delete_todo/{{todo_item.id}}/" action="post">
+
+              <form action="delete_todo/{{todo_item.id}}/" method="post">
                 {% csrf_token %}
+
+
+                <span class="badge badge-secondary" style="display:inline-block; height:31px"><h6>{{ todo_item.priority }}</h6></span>
               <button type="submit" class="btn btn-danger btn-sm">Delete</button>
               </form>
+
+              <!--
+              <form action="update_priority/{{todo_item.id}}/" action="post">
+                {% csrf_token %}
+                <label>Priority &nbsp;</label>
+                <select class="form-control" method="post" name="priority" placeholder="{{ todo_item.priority }}">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+                <button type="submit" class="btn btn-primary ml-2 mb-2 mt-2">Update</button>
+              </form>
+              -->
             </div>
           </li>
         {% endfor %}
